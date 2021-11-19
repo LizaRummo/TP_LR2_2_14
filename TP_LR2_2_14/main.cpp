@@ -88,10 +88,13 @@ void print_menu() {
 	cout << "  >> ";
 }
 
-void found_numbs(string sentence) {
+void found_numbs(string sentence, string sep_words) {
+	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	int length = sentence.length();
-	bool found = 0;
+	bool found = 0, sep = 1;
 	for (int i = 0; i < length; i++) {
+		if (sentence[i] != sep_words[0]) sep = 0;
+		SetConsoleTextAttribute(hStdOut, BACKGROUND_GREEN);
 		if (sentence[i] == '0') {cout << "ноль"; found = 1;}
 		if (sentence[i] == '1') { cout << "один"; found = 1; }
 		if (sentence[i] == '2') { cout << "два"; found = 1; }
@@ -102,16 +105,15 @@ void found_numbs(string sentence) {
 		if (sentence[i] == '7') { cout << "семь"; found = 1; }
 		if (sentence[i] == '8') { cout << "восемь"; found = 1; }
 		if (sentence[i] == '9') { cout << "девять"; found = 1; }
-		if (!found) cout << sentence[i];
+		if (!found && !sep) {
+			SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+			cout << sentence[i]; }
 		found = 0;
 	}
 	cout << endl;
 }
 
 void import(string sep_words, string sep_sentence) {
-	SetConsoleCP(1251);
-	SetConsoleOutputCP(1251);
-	setlocale(LC_ALL, "Russian");
 	string file_name;
 	cout << "Введите имя файла [формат имя.тип]: " << endl << "  ";
 	file_name = in(file_name);
@@ -129,36 +131,29 @@ void import(string sep_words, string sep_sentence) {
 	if (!fin.is_open())										// если файл не открыт
 		cout << "Файл не может быть открыт!" << endl;		// сообщить об этом
 	else {
-
-		while (!(fin.eof())/*||(buf!=empty)*/) {
-			string input = "", buf = "", empty = "", res = "";
-			int length = 0, ctr = 0, first_letter = NULL, find_sep_sentence = 0;
+		string input, buf, empty = "", res = "";
+		int length = 0, ctr = 0, first_letter = NULL, find_sep_sentence = 0;
+		while (!(fin.eof())) {
 
 			getline(fin, input);
-			//getline(fin, input);
 			length = input.length();
 			for (int i = 0; i < length; i++) {
-				if (input[i] == sep_sentence[0]) {
+				ctr++;
+				if (input[i] == sep_sentence[0]|| (i + 1) == length) {
 					if (!find_sep_sentence) {
-						ctr++;
 						buf.assign(input, first_letter, ctr);
-						//поиск цифр
-						found_numbs(buf);
-
+						found_numbs(buf, sep_words);
 						first_letter = NULL;
 						find_sep_sentence = 1;
 						ctr = 0;
 					}
-					//ctr++;
 				}
 				else
 					if (find_sep_sentence) {
-						first_letter = i;
+						first_letter = i + 1;
 						find_sep_sentence = 0;
 					}
-				ctr++;
 			}
-			
 		}
 	}
 }
