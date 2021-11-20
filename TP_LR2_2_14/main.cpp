@@ -258,6 +258,9 @@ void print_menu() {
 	cout << "  3. Создать файл" << endl;
 	cout << "  4. Дополнить файл" << endl;
 	cout << "  ---" << endl;
+	cout << "  5. Поменять разделитель слов" << endl;
+	cout << "  6. Поменять разделитель предложений" << endl;
+	cout << "  ---" << endl;
 	cout << "  0. Выход из программы" << endl;
 	cout << "  >> ";
 }
@@ -266,7 +269,7 @@ void menu(string sep_words, string sep_sentence) {
 	while (1) {
 
 		print_menu();
-		switch (point = selection(0, 4)) {
+		switch (point = selection(0, 6)) {
 		case 1:
 		{
 			importToConsole(sep_words, sep_sentence);
@@ -287,6 +290,21 @@ void menu(string sep_words, string sep_sentence) {
 		case 4:
 		{
 			editFile();
+		}
+		break;
+		case 5:
+		{
+			cout << "Введите новый разделитель слов: ";
+			string new_sep_words;
+			sep_words = in(new_sep_words);
+			
+		}
+		break;
+		case 6:
+		{
+			cout << "Введите новый разделитель предложений: ";
+			string new_sep_sentence;
+			sep_sentence = in(new_sep_sentence);
 		}
 		break;
 		case 0:
