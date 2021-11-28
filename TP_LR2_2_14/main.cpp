@@ -235,7 +235,6 @@ int selection(int first, int last) {
 			buf = in(buf);
 			buf = checkNumber(buf);
 			input = stoi(buf);
-			//cin >> input;
 			if (!(cin.fail() || input < first || input > last))
 				return input;
 			else throw "Выбран отсутствующий пункт меню";
@@ -244,14 +243,11 @@ int selection(int first, int last) {
 			cin.clear();
 			cerr << "Выбран отсутствующий пункт меню. Повтороите ввод" << endl << "> ";
 		}
-		//cin.ignore(32767, '\n');
 	}
 	return input;
 }
 void print_menu() {
 	system("cls");
-	//statusbar();
-	//cout << "Главное меню" << endl;
 	cout << endl << "Выберите пункт меню:" << endl;
 	cout << "  1. Импортировать текст из файла и вывести на экран" << endl;
 	cout << "  2. Импортировать текст из файла и сохранить в файл" << endl;
